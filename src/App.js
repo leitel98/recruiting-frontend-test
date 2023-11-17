@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import Document from "./components/Document";
+import ModalContent from "./components/ModalContent";
 import axios from "axios";
 
 function App() {
@@ -6,6 +8,7 @@ function App() {
   const [creditNotes, setCreditNotes] = useState([]);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [selectedCreditNote, setSelectedCreditNote] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -34,101 +37,60 @@ function App() {
   }, []);
 
   return (
-    <main className="flex flex-col items-center justify-center gap-10 mt-20">
-      <h1 className="font-semibold text-lg">Selecciona una factura</h1>
-      <section className="flex flex-col w-full max-w-3xl">
-        {receivedInvoices?.map((invoice, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between border rounded-md px-4 py-2"
-          >
-            <div className="flex items-center gap-2">
-              <input
-                onClick={() => setSelectedInvoice(invoice)}
-                checked={invoice === selectedInvoice}
-                type="checkbox"
-                className="w-4 h-4 rounded-full border"
-              />
-              <p className="font-bold">inv_{index + 1}</p>
-              <p className="text-gray-500">({invoice.organization_id})</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <p className="font-bold">
-                $
-                {invoice.currency === "CLP"
-                  ? invoice.amount.toLocaleString("es-CL")
-                  : (invoice.amount * 888.22).toLocaleString("es-CL")}{" "}
-                CLP
-              </p>
-              <p className="text-gray-500">
-                <p className="font-bold">
-                  ( $
-                  {invoice.currency === "USD"
-                    ? invoice.amount.toLocaleString("en-US")
-                    : invoice.amount * (0.0011).toLocaleString("en-US")}{" "}
-                  USD)
-                </p>
-              </p>
-            </div>
-            <p className="text-gray-500">Recibida</p>
-          </div>
-        ))}
-      </section>
-      {selectedInvoice && (
-        <>
-          <h1 className="font-semibold text-lg">
-            Selecciona una nota de crédito
-          </h1>
-          <section className="flex flex-col w-full max-w-3xl">
-            {creditNotes.map(
-              (note, index) =>
-                note.reference === selectedInvoice.id && (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between border rounded-md px-4 py-2"
-                  >
-                    <div className="flex items-center gap-2">
-                      <input
-                        onClick={() => setSelectedCreditNote(note)}
-                        checked={note === selectedInvoice}
-                        type="checkbox"
-                        className="w-4 h-4 rounded-full border"
-                      />
-                      <p className="font-bold">inv_{index + 1}</p>
-                      <p className="text-gray-500">({note.organization_id})</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <p className="font-bold">
-                        $
-                        {note.currency === "CLP"
-                          ? note.amount.toLocaleString("es-CL")
-                          : (note.amount * 888.22).toLocaleString("es-CL")}{" "}
-                        CLP
-                      </p>
-                      <p className="text-gray-500">
-                        <p className="font-bold">
-                          ($
-                          {note.currency === "USD"
-                            ? note.amount.toLocaleString("en-US")
-                            : note.amount *
-                              (0.0011).toLocaleString("en-US")}{" "}
-                          USD)
-                        </p>
-                      </p>
-                    </div>
-                    <p className="text-gray-500">inv_{index + 1}</p>
-                  </div>
-                )
-            )}
-          </section>
-          {selectedCreditNote && (
-            <button className="px-4 py-2 shadow-md hover:scale-105 transition-all duration-150 bg-blue-800 text-white flex mx-auto rounded-md">
-              Asignar
-            </button>
-          )}
-        </>
+    <>
+      {isModalOpen && (
+        <ModalContent
+          selectedInvoice={selectedInvoice}
+          selectedCreditNote={selectedCreditNote}
+          setIsModalOpen={setIsModalOpen}
+        />
       )}
-    </main>
+      <main className="flex flex-col items-center justify-center gap-10 mt-20">
+        <h1 className="font-semibold text-lg">Selecciona una factura</h1>
+        <section className="flex flex-col w-full max-w-3xl">
+          {receivedInvoices?.map((invoice, index) => (
+            <Document
+              key={index}
+              document={invoice}
+              index={index}
+              selectedDocument={selectedInvoice}
+              handleSelect={setSelectedInvoice}
+              title={"Recibida"}
+            />
+          ))}
+        </section>
+        {selectedInvoice && (
+          <>
+            <h1 className="font-semibold text-lg">
+              Selecciona una nota de crédito
+            </h1>
+            <section className="flex flex-col w-full max-w-3xl">
+              {creditNotes.map(
+                (note, index) =>
+                  note.reference === selectedInvoice.id && (
+                    <Document
+                      key={index}
+                      document={note}
+                      index={index}
+                      selectedDocument={selectedCreditNote}
+                      handleSelect={setSelectedCreditNote}
+                      title={`inv_${index + 1}`}
+                    />
+                  )
+              )}
+            </section>
+            {selectedCreditNote && (
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="px-4 py-2 shadow-md hover:scale-105 transition-all duration-150 bg-blue-800 text-white flex mx-auto rounded-md"
+              >
+                Asignar
+              </button>
+            )}
+          </>
+        )}
+      </main>
+    </>
   );
 }
 
