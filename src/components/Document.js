@@ -15,7 +15,11 @@ const Document = ({
       <div className="flex items-center gap-2">
         <input
           onClick={() => handleSelect(document)}
-          checked={document === selectedDocument}
+          checked={
+            document.type === "received"
+              ? document === selectedDocument
+              : selectedDocument.includes(document)
+          }
           type="checkbox"
           className="w-4 h-4 rounded-full border"
         />
