@@ -6,11 +6,11 @@ const ModalContent = ({
   selectedInvoice,
   selectedCreditNotes,
   totalCreditNotesAmount,
-  setIsModalOpen,
+  reset
 }) => {
   return (
     <div className="absolute h-full z-20 bottom-0 top-0 left-0 right-0 bg-gray-500 bg-opacity-50">
-      <div className="flex max-w-2xl w-full z-20 absolute bottom-20 left-[50%] -translate-x-[50%] flex-col gap-4 p-4 rounded-md bg-white items-center">
+      <div className="flex max-w-3xl w-full z-20 absolute bottom-20 left-[50%] -translate-x-[50%] flex-col gap-4 p-4 rounded-md bg-white items-center">
         <CheckCircleIcon
           width={40}
           height={40}
@@ -25,7 +25,7 @@ const ModalContent = ({
           totalCreditNotesAmount={totalCreditNotesAmount}
         />
         <button
-          onClick={() => setIsModalOpen(false)}
+          onClick={() => reset()}
           className="px-4 py-2 shadow-md hover:scale-105 transition-all duration-150 bg-blue-800 text-white flex mx-auto rounded-md"
         >
           Seguir asignando

@@ -19,9 +19,14 @@ const Document = ({
   return (
     <div
       key={index}
-      className="flex items-center justify-between border rounded-md px-4 py-2"
+      className={`flex items-center justify-between border rounded-md px-4 py-2  ${
+        (Array.isArray(selectedDocument) && selectedDocument.includes(document)) ||
+        (!Array.isArray(selectedDocument) && document === selectedDocument)
+          ? "bg-blue-100 text-blue-700"
+          : ""
+      }`}
     >
-      <div className="flex items-center gap-2">
+      <div className={"flex items-center gap-2"}>
         <input
           onChange={handleChange}
           checked={isSelected}

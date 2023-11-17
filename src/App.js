@@ -14,19 +14,20 @@ function App() {
     removeCreditNote,
     addCreditNote,
     totalCreditNotesAmount,
+    reset,
   } = useAppHook();
   return (
-    <>
+    <main className="relative">
       {isModalOpen && (
         <ModalContent
           selectedInvoice={selectedInvoice}
           selectedCreditNotes={selectedCreditNotes}
           totalCreditNotesAmount={totalCreditNotesAmount}
-          setIsModalOpen={setIsModalOpen}
           removeCreditNote={removeCreditNote}
+          reset={reset}
         />
       )}
-      <main className="flex flex-col items-center justify-center gap-10 mt-10">
+      <section className="flex flex-col items-center justify-center gap-8 py-10">
         <h1 className="font-semibold text-lg">Selecciona una factura</h1>
         <section className="flex flex-col w-full max-w-3xl">
           {receivedInvoices?.map((invoice, index) => (
@@ -82,8 +83,8 @@ function App() {
             )}
           </>
         )}
-      </main>
-    </>
+      </section>
+    </main>
   );
 }
 
