@@ -72,11 +72,15 @@ export const useAppHook = () => {
     setIsModalOpen(false);
   };
 
+  const handleSelectInvoice = (document) => {
+    setSelectedInvoice(document);
+    setSelectedCreditNotes([]);
+  };
+
   return {
     receivedInvoices,
     creditNotes,
     selectedInvoice,
-    setSelectedInvoice,
     selectedCreditNotes,
     isModalOpen,
     removeCreditNote,
@@ -84,5 +88,6 @@ export const useAppHook = () => {
     setIsModalOpen,
     totalCreditNotesAmount,
     reset,
+    handleSelectInvoice
   };
 };

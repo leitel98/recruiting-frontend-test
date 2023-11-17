@@ -7,7 +7,6 @@ function App() {
     receivedInvoices,
     creditNotes,
     selectedInvoice,
-    setSelectedInvoice,
     selectedCreditNotes,
     isModalOpen,
     setIsModalOpen,
@@ -15,6 +14,7 @@ function App() {
     addCreditNote,
     totalCreditNotesAmount,
     reset,
+    handleSelectInvoice
   } = useAppHook();
   return (
     <main className="relative">
@@ -36,7 +36,7 @@ function App() {
               document={invoice}
               index={index}
               selectedDocument={selectedInvoice}
-              handleSelect={setSelectedInvoice}
+              handleSelect={handleSelectInvoice}
               title="Recibida"
             />
           ))}
