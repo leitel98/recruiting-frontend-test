@@ -7,6 +7,15 @@ const Document = ({
   handleSelect,
   title,
 }) => {
+  const isSelected =
+    document.type === "received"
+      ? document === selectedDocument
+      : selectedDocument.includes(document);
+
+  const handleChange = () => {
+    handleSelect(document);
+  };
+
   return (
     <div
       key={index}
@@ -14,12 +23,8 @@ const Document = ({
     >
       <div className="flex items-center gap-2">
         <input
-          onClick={() => handleSelect(document)}
-          checked={
-            document.type === "received"
-              ? document === selectedDocument
-              : selectedDocument.includes(document)
-          }
+          onChange={handleChange}
+          checked={isSelected}
           type="checkbox"
           className="w-4 h-4 rounded-full border"
         />
